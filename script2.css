@@ -1,0 +1,122 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+}
+
+
+/* TÍTULO */
+
+h1 {
+    background-color: #222;
+    color: #00e88f;
+    text-align: center;
+    padding: 30px;
+    margin: 0;
+}
+
+
+/* FORMULÁRIO */
+
+form {
+    background-color: white;
+
+    width: 80%;
+    max-width: 500px;
+
+    margin: 30px auto;
+    padding: 30px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+/* CAMPOS */
+
+input {
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    font-size: 15px;
+
+    box-sizing: border-box;
+}
+
+
+/* FOCO */
+
+input:focus {
+    outline: 2px solid #00e88f;
+}
+
+
+/* BOTÕES */
+
+button {
+    padding: 12px 25px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+}
+
+
+/* ENVIAR */
+
+button[type="submit"] {
+    background-color: #00e88f;
+    color: #111;
+}
+
+
+/* LIMPAR */
+
+button[type="reset"] {
+    background-color: #ddd;
+    color: #333;
+}
+
+
+/* EFEITO AO PASSAR O MOUSE */
+
+button:hover {
+    transform: scale(1.03);
+}
+
+
+/* RESULTADO */
+
+#resultado {
+    width: 80%;
+    max-width: 500px;
+
+    margin: 25px auto;
+    padding: 20px;
+
+    background-color: #e8fff5;
+
+    border-left: 5px solid #00e88f;
+
+    border-radius: 8px;
+
+    box-sizing: border-box;
+}
+
+#resultado h3 {
+    color: #008f5a;
+}
