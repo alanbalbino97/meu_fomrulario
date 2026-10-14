@@ -1,66 +1,72 @@
 
 const formulario = document.getElementById("formulario");
 const resultado = document.getElementById("resultado");
+const botaoEnviar = formulario.querySelector(
+    'button[type="submit"], button:not([type]), input[type="submit"]'
+);
 
-// URL do Google Apps Script
 const URL_PLANILHA = "https://script.google.com/macros/s/AKfycbwmmQ0Xw_dLcNhGH9HEj4ao2g1MRIBJ5dqjADwOowAbJ_BOHTGNlf3JZJredA-xgcua/exec";
 
+let enviando = false;
 
-// Evento de envio
-formulario.addEventListener("submit", function(event) {
-
+formulario.addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    // Captura os valores
-    const nome = document.getElementById("nome").value;
-    const email = document.getElementById("email").value;
-    const telefone = document.getElementById("telefone").value;
+    // Impede envios simultâneos
+    if (enviando) {
+        return;
+    }
 
+    enviando = true;
+    botaoEnviar.disabled = true;
+    botaoEnviar.value !== undefined
+        ? botaoEnviar.value = "Enviando..."
+        : botaoEnviar.textContent = "Enviando...";
 
-    // Envia os dados para o Google Planilhas
-    fetch(URL_PLANILHA, {
-        method: "POST",
+    const nome = document.getElementById("nome").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
 
-        body: JSON.stringify({
-            nome: nome,
-            email: email,
-            telefone: telefone
-        })
-    })
-    .then(response => response.text())
+    try {
+        const resposta = await fetch(URL_PLANILHA, {
+            method: "POST",
+            body: JSON.stringify({
+                nome: nome,
+                email: email,
+                telefone: telefone
+            })
+        });
 
-    .then(resultadoServidor => {
+        if (!resposta.ok) {
+            throw new Error("Falha na comunicação com o servidor.");
+        }
 
-        // Mensagem na página
         resultado.innerHTML = `
-            <h3>Cadastro realizado!</h3>
-
-            <p><strong>Nome:</strong> ${nome}</p>
-
-            <p><strong>E-mail:</strong> ${email}</p>
-
-            <p><strong>Telefone:</strong> ${telefone}</p>
+            <h3>Cadastro enviado!</h3>
+            <p>Nome: ${nome}</p>
+            <p>E-mail: ${email}</p>
+            <p>Telefone: ${telefone}</p>
         `;
 
-        // Alerta
-        alert("Formulário preenchido com sucesso após cadastrar!");
+        alert("Cadastro enviado!");
 
-        // Limpa o formulário
         formulario.reset();
-    })
 
-    .catch(erro => {
-
+    } catch (erro) {
         console.error("Erro:", erro);
+        alert("Não foi possível confirmar o envio. Verifique a planilha antes de tentar novamente.");
+    } finally {
+        enviando = false;
+        botaoEnviar.disabled = false;
 
-        alert("Ocorreu um erro ao enviar o cadastro.");
-    });
+        if (botaoEnviar.tagName === "INPUT") {
+            botaoEnviar.value = "Enviar";
+        } else {
+            botaoEnviar.textContent = "Enviar";
+        }
+    }
 });
 
-
-// Evento do botão LIMPAR
 formulario.addEventListener("reset", function() {
-
     resultado.innerHTML = "";
-
 });
